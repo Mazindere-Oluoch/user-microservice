@@ -43,7 +43,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>  <!--will automatically run as a Eureka client-->
 		</dependency>
 
 		<dependency>
