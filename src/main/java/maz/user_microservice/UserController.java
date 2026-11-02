@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/user")
@@ -20,8 +21,8 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(@PathVariable Long id) {
-        User user = userService.getUserById(id);
-        if (user != null) {
+        Optional<User> user = userService.getUserById(id);
+        if (user.isPresent()) {  //replaces user != null
             return ResponseEntity.ok(user);
         } else {
             return ResponseEntity.notFound().build();

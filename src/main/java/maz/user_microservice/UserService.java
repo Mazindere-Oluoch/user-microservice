@@ -11,13 +11,9 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User getUserById(Long id) {
-        Optional<User> optional;
-        if((optional = userRepository.findById(id)).isEmpty()){
-            return  null;
-        } else {
-            return  optional.get();
-        }
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+
     }
 
     public User getUserByUsername(String username) {
@@ -30,7 +26,9 @@ public class UserService {
     }
 
     public User updateUser(User updatedUser) {
-        User user = userRepository.findByUsername(updatedUser.getUsername());
+        User user = userRepository.findById(updatedUser.getId()).orElseThrow(
+                () -> new RuntimeException("User not found")
+        );
         BeanUtils.copyProperties(updatedUser, user); //todo check this also
         return userRepository.save(user);
     }
