@@ -1,7 +1,8 @@
 package maz.user_microservice;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,19 +15,20 @@ import java.net.URI;
 import java.util.Optional;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+
+    private final UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable Long id) {
+    public ResponseEntity<?> getUserById(@PathVariable Long id) { //todo introduce an API generic response class
         Optional<User> user = userService.getUserById(id);
         if (user.isPresent()) {  //replaces user != null
-            return ResponseEntity.ok(user);
-        } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(user.get());
         }
+            return ResponseEntity.notFound().build();
+
 
     }
 
@@ -63,6 +65,7 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
         try {
             userService.deleteUser(id);
